@@ -443,6 +443,50 @@
             checkbox.addEventListener('change', applyFilters);
         });
 
+        // ==== Initialen Filter über URL-Parameter setzen (z.B. für iFrame-Einbettung) ====
+        // Beispiel: ...index.html?status=recently  oder  ...index.html?status=recently,planning&category=education
+        (function() {
+            var params = new URLSearchParams(window.location.search);
+
+            var statusParam = params.get('status');
+            if (statusParam) {
+                var statusMap = {
+                    'recently': 'Recently (Q2_26)',
+                    'overview': 'Overview (Q1_25-Q1_26)',
+                    'planning': 'Planning (Q3)'
+                };
+                var wantedStatus = statusParam.split(',')
+                    .map(function(s) { return statusMap[s.trim().toLowerCase()]; })
+                    .filter(Boolean);
+                if (wantedStatus.length) {
+                    document.querySelectorAll('.status-toggle').forEach(function(cb) {
+                        cb.checked = wantedStatus.indexOf(cb.value) !== -1;
+                    });
+                }
+            }
+
+            var categoryParam = params.get('category');
+            if (categoryParam) {
+                var categoryMap = {
+                    'water': 'Water & Env.',
+                    'education': 'Education',
+                    'emergency': 'Emergency Programs'
+                };
+                var wantedCategory = categoryParam.split(',')
+                    .map(function(s) { return categoryMap[s.trim().toLowerCase()]; })
+                    .filter(Boolean);
+                if (wantedCategory.length) {
+                    document.querySelectorAll('.cat-toggle').forEach(function(cb) {
+                        cb.checked = wantedCategory.indexOf(cb.value) !== -1;
+                    });
+                }
+            }
+
+            if (statusParam || categoryParam) {
+                applyFilters();
+            }
+        })();
+
         // ==== Zoom/Extent-Fix für iFrame-Einbettung ====
         var initialBounds_TPM_Monitoring_List_Aktuell_2 = [[12.530401690313958,41.70576264187567],[17.132961780925715,48.61560834354486]];
 
