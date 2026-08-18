@@ -422,7 +422,7 @@
             layer_TPM_Monitoring_List_Aktuell_2.eachLayer(function(layer) {
                 var cat = layer.feature.properties['Project-ID: UNIT_E_NAME'];
                 var status = layer.feature.properties['Recently/Overview'];
-                var visible = 2 status !== 'Planning (Q3)' && 3activeCats.indexOf(cat) !== -1 && 4activeStatus.indexOf(status) !== -1;
+                var visible = activeCats.indexOf(cat) !== -1 && activeStatus.indexOf(status) !== -1;
 
                 // Marker selbst ein-/ausblenden (SVG-Pfad)
                 if (layer._path) {
